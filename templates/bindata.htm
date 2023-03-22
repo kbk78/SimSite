@@ -1,0 +1,39 @@
+<html>
+  <head>
+    <title>bin data</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  </head>
+  <body>
+	  <input type="text" placeholder="testtext" name="testtext" value="testtext">
+    <div class="container">
+      <h1>Bin Data</h1>
+      <br>
+      <form action="" method="post" enctype=multipart/form-data>
+        <input type="file" name="weatherfile" size="50"/>
+        <br><br>
+      	<input type="text" placeholder="binrange" name="binrange" value="binrange">
+        <br><br>
+	      <input type="text" placeholder="binfrom" name="binfrom" value="binfrom">
+        <br><br>
+      	<input type="text" placeholder="binto" name="binto" value="binto">
+        <br><br>
+        <input class="btn btn-default" type="submit" value="submit" onclick="myfunction()">
+        <p class="fname"><strong>Weather file name:</strong>
+        <div name ="postplot" class="container">
+        <img src="data:image/png;base64,{{ image_data }}"\>
+        </div>
+      </form>
+      {% if error %}
+        <p class="error"><strong>Error:</strong> {{ error }}
+      {% endif %}
+    </div>
+<script>
+function myfunction(){
+  alert('reached')
+	document.getElementById("binto").nodeValue = document.getElementById("binfrom").Value;
+  }
+
+</script>
+
+  </body>
+</html>

@@ -1,0 +1,27 @@
+<html>
+  <head>
+    <title>bin data</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="static/bootstrap.min.css" rel="stylesheet" media="screen">
+  </head>
+  <body>
+    <div class="container">
+      <h1>Bin Data</h1>
+      <br>
+      <form action="" method="post">
+        <input type="text" placeholder="amp" name="amp" value="{{
+          request.form.amp }}">
+         <input type="freq" placeholder="freq" name="freq" value="{{
+          request.form.freq }}">
+        <input class="btn btn-default" type="submit" value="plot">
+      </form>
+      {% if error %}
+        <p class="error"><strong>Error:</strong> {{ error }}
+      {% endif %}
+
+    </div>
+    <div name ="postplot" class="container">
+    <img src="data:image/png;base64,{{ image_data }}"\>
+    </div>
+  </body>
+</html>
