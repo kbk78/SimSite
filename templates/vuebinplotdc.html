@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <title>etoolsweb</title>
+
+	<link type="text/css" rel="stylesheet" href="https://unpkg.com/bootstrap/dist/css/bootstrap.min.css"/>0
+	<link type="text/css" rel="stylesheet" href="https://unpkg.com/bootstrap-vue@latest/dist/bootstrap-vue.min.css"/>
+
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+	<script src="https://cdn.jsdelivr.net/npm/vue-clipboards@1.2.4/dist/vue-clipboards.min.js"></script>
+	<script src="https://unpkg.com/bootstrap-vue@latest/dist/bootstrap-vue.min.js"></script>
+
+	<script src="https://unpkg.com/crossfilter2@1.4.7/crossfilter.min.js"></script>
+	<script src="https://d3js.org/d3.v5.min.js"></script>
+	<script src="https://unpkg.com/dc@3/dc.js"></script>
+
+</head>
+<body>
+
+<div id = "app-6">
+	<br><br>
+
+	<h3>Inputs</h3>
+	<b-card style="border:1px solid #cecece;">
+
+	<br><br>
+		<b-row>
+			<b-col cols ='1'><label for="idffile">Select weather file</label></b-col><br>
+			<b-col cols = '3'><b-form-file id='idffile' placeholder="Choose *.epw weather file" @input="openFile"></b-form-file></b-col><br><br>
+			<b-col></b-col>
+		</b-row>
+
+
+		<b-row>
+			<b-col cols ='1'><label for="noofbins">Bin width</label></b-col><br>
+			<b-col cols ='2'><input id="nobinstxt" v-model.lazy="bins" placeholder="edit me" @change="plotch"><br></b-col>
+			<b-col cols ='1'><b-form-input v-model='bins' type="range" min=1 max=100 id="myrange" @change="plotch"></b-form-input><br><br></b-col>
+		</b-row>
+
+	</b-card>
+	<br><br>
+	<br><br>
+	<h3> Bin Chart</h3>
+	<div id = 'ch1'>[--]<br></div>
+
+	<br><br>
+	<h3> Bin values</h3>
+	        <b-button variant = "outline-primary" v-clipboard:copy="objtoarray(items)">Copy bin data</b-button>
+		<b-table  striped hover :items="items" fields="temps"></b-table>
+
+
+</div>
+<br>
+<br>
+
+
+<script>
+        Vue.use(vueClipboards);
+	var app6 = new Vue({
+	  el: '#app-6',
+	  data: {
+	   bins: 20,
+	   tdbs: [1],
+	   items: [
+			  {key:0 ,value:0 },
+		  ],
+
+	  },
+	  methods:{
+		  plotch(){
+			var tdbscrossfilter = crossfilter(this.tdbs);
+			var binwidth = this.bins;
+			var tdbsdim = tdbscrossfilter.dimension(function(d) { return d;});
+			var tdbsgroup = tdbsdim.group(function(d) { return binwidth * Math.floor(d/binwidth); });
+			this.items = tdbsgroup.all()
+			var extent = d3.extent(this.tdbs)
+			extent[0] = extent[0]-binwidth
+
+			var chart = dc.barChart("#ch1");
+			chart
+			    .width(768)
+			    .height(480)
+			    .xUnits(dc.units.fp.precision(binwidth))
+			   // .x(d3.scaleLinear().domain(d3.extent(this.tdbs)))
+			    .x(d3.scaleLinear().domain(extent))
+			    .brushOn(false)
+			    .yAxisLabel("Hours")
+			    .xAxisLabel("Temperature range (degF)")
+			    .dimension(tdbsdim)
+			    .group(tdbsgroup)
+	//		    .xAxis().ticks(5)
+			chart.render();
+
+
+			dc.dataTable("#tdb-table")
+			    .dimension(tdbsdim)
+			    .section(function(d){return d})
+			    .columns(['tdbs'])
+			    .size(500)
+		       	    .order(d3.descending)
+
+
+			 },
+
+		  openFile (event){
+			  console.log('loading')
+			  let self = this
+			  var reader = new FileReader();
+			  reader.onload = function(e){
+			  var text1 = reader.result.split('\n').slice(-8761).join('\n');
+			  self.tdbs = d3.csvParseRows(text1,function(d,i){return +d[6]*1.8+32;});
+			  self.plotch()
+			  }
+			  reader.readAsText(event);
+			  },
+
+		  objtoarray(bins){
+				 return String(Object.keys(bins).map(function(key) {
+					return String(bins[key].key)+','+String(bins[key].value)+'\n';
+		  		}));
+		  }
+		 }
+	 }
+	  )
+
+</script>
+
+</body>
+</html>

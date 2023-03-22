@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<link rel="shortcut icon" href="">
+	<meta charset="UTF-8">
+	<title>simdata</title>
+</head>
+<body>
+
+<div id = "apptest">
+	<br>
+	<br>
+	<br>
+
+	<b-card>
+
+	<b-button variant = "outline-primary" @click="faction">Load API Data</b-button><br><br>
+
+	<b-row >
+		<b-col sm="3">
+
+			<div id = 'eqmnu'>Equipment W/sqft<br></div>
+			<div id = 'oamnu'>OA CFM/sqft<br></div>
+
+			<div id = 'wallinsmnu'>Wall insulation<br></div>
+
+		</b-col>
+
+		<b-col sm="3">
+			<div id = 'winmnu'>Windowheight<br></div>
+			<div id = 'schmnu'>Schedules<br></div>
+			<div id = 'idfmnu'>System Type (idf)<br></div>
+			<div id = 'weamnu'>Weather<br></div>
+		</b-col>
+		<div id = 'euich'>[--]<br></div>
+		<div id = 'euidisch'>[--]<br></div>
+
+		<b-col sm="3">
+
+
+		</b-col>
+
+	</b-row>
+
+
+
+	<table id ="sumtable" class="table">
+	  <thead>
+	    <tr class=header>
+	      <th>Item</th>
+	      <th>Average</th>
+	    </tr>
+	  </thead>
+	</table>
+
+	 <b-button variant = "outline-primary" v-clipboard:copy="clipboarddata">Copy</b-button><br>
+
+	</b-card>
+
+	<br>
+	<br>
+
+
+
+</div>
+</body>
+
+	<link rel="shortcut icon" href="">
+
+	<link type="text/css" rel="stylesheet" href="https://unpkg.com/bootstrap/dist/css/bootstrap.min.css"/>
+	<link type="text/css" rel="stylesheet" href="https://unpkg.com/bootstrap-vue@latest/dist/bootstrap-vue.min.css"/>
+	<link type="text/css" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/dc/3.1.2/dc.css"/>
+
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+	<script src="https://cdn.jsdelivr.net/npm/vue-clipboards@1.2.4/dist/vue-clipboards.min.js"></script>
+	<script src="https://unpkg.com/bootstrap-vue@latest/dist/bootstrap-vue.min.js"></script>
+
+	<script src="https://unpkg.com/crossfilter2@1.4.7/crossfilter.min.js"></script>
+
+	<script src="https://d3js.org/d3.v5.min.js"></script>
+	<script src="https://unpkg.com/dc@3.2.2/dc.js"></script>
+
+	<!-- link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/c3/c3.min.css"></script>
+	<script src="https://cdn.jsdelivr.net/npm/c3/c3.min.js"></script --!>
+
+	<script type = "text/javascript"
+		 src = "{{ url_for('static', filename = 'js/simdata.js') }}" ></script>
+
+	<script type = "text/javascript"
+		 src = "{{ url_for('static', filename = 'js/c3.min.js') }}" ></script>
+
+	<link rel = "stylesheet"
+		 src = "{{ url_for('static', filename = 'css/c3.min.css') }}" ></script>
+
+
+</html>
+
