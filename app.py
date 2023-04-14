@@ -9,11 +9,12 @@ app.secret_key='this is my secret'
 
 @app.route('/')
 def home():
-	return "Hello, check address! \n \\simple.png \n \\eapp \n \\binplot "
+	return "Hello, check address! \n \\simdata \n \\bindatadc \n \\binplot "
 
 @app.route('/simdata')
 def simdata():
 	return render_template("simdata.html")
+
 
 @app.route('/simdataapi',methods=['GET','POST'])
 def simdataapi():
